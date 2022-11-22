@@ -9,7 +9,13 @@ namespace DemoAppWeb
 
         public InnovationRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("InnovationManagement");
+            var server = configuration["Server"];
+            var port = configuration["Port"];
+            var database = configuration["Database"];
+            var user = configuration["User"];
+            var password = configuration["Password"];
+            _connectionString = $"Server={server},{port};Database={database};User={user};Password={password};Integrated Security=False;";
+            //_connectionString = configuration.GetConnectionString("InnovationManagement");
         }
 
         public async Task<List<DepartmentIdea>> GetDepartmentIdeasAsync()
