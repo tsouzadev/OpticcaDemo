@@ -88,7 +88,7 @@ stages:
       inputs:
         connectionType: 'OpenShift Connection Service'
         openshiftService: 'openshift-service-connection'
-        cmd: 'oc start-build -l opticcademo
+        cmd: 'oc start-build -l opticcademo'
         uselocalOc: true
 
 # - stage: UAT 
