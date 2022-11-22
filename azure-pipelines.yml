@@ -8,7 +8,6 @@ variables:
   tag: '$(Build.BuildId)'
   buildConfiguration: 'Release'
   project-name-dev: 'opticca-demo'
-  app-name-dev: 'opticca-test-a'
   skip-creation: true
 
 stages: 
@@ -75,30 +74,27 @@ stages:
 
     - task: oc-cmd@2
       displayName: Delete Web App
-      # condition: eq(variables['skip-creation'], 'false')
       inputs:
         connectionType: 'OpenShift Connection Service'
         openshiftService: 'openshift-service-connection'
-        cmd: 'oc delete all -l app=opticca-test-a'
+        cmd: 'oc delete all -l app=opticca-demo'
         uselocalOc: true
 
     - task: oc-cmd@2
       displayName: Deploy Web App
-      # condition: eq(variables['skip-creation'], 'false')
       inputs:
         connectionType: 'OpenShift Connection Service'
         openshiftService: 'openshift-service-connection'
         cmd: 'oc new-app dotnet:6.0-ubi8~https://github.com/tsouzadev/OpticcaDemo --strategy=docker -l app=opticca-demo -e Server=20.118.144.28 -e Port=31433 -e Database=InnovationManagement -e User=sa -e Password=Sql2022Demo'
         uselocalOc: true
 
-    # - task: oc-cmd@2
-    #   displayName: Redeploy Web App
-    #   condition: eq(variables['skip-creation'], 'true')
-    #   inputs:
-    #     connectionType: 'OpenShift Connection Service'
-    #     openshiftService: 'openshift-service-connection'
-    #     cmd: 'oc start-build opticcademo'
-    #     uselocalOc: true
+    - task: oc-cmd@2
+      displayName: Expose Web App Service
+      inputs:
+        connectionType: 'OpenShift Connection Service'
+        openshiftService: 'openshift-service-connection'
+        cmd: 'oc expose svc opticcademo'
+        uselocalOc: true
 
 
 # - stage: UAT 
