@@ -96,6 +96,14 @@ stages:
         cmd: 'oc expose svc opticcademo'
         uselocalOc: true
 
+    - task: oc-cmd@2
+      displayName: Display Status
+      inputs:
+        connectionType: 'OpenShift Connection Service'
+        openshiftService: 'openshift-service-connection'
+        cmd: 'oc status'
+        uselocalOc: true
+
 
 # - stage: UAT 
 #   displayName: Deploy UAT
