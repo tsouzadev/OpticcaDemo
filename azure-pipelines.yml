@@ -1,0 +1,111 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  tag: '$(Build.BuildId)'
+  buildConfiguration: 'Release'
+  project-name-dev: 'opticca-demo'
+
+stages: 
+# - stage: Build
+#   displayName: Build
+#   jobs:
+#   - job: BuildJob
+#     steps: 
+
+
+#     - task: Docker@2
+#       displayName: 'Docker build & Create Docker Image'
+#       inputs:
+#         containerRegistry: 'docker-arotour'
+#         repository: '$(project-name-dev)/$(image-repository-dev)'
+#         command: 'build'
+#         Dockerfile: 'openshiftapplication/Dockerfile'
+#         buildContext: '.'
+#         tags: '$(tag)'
+
+#     - task: DotNetCoreCLI@2
+#       displayName: 'Run Test'
+#       inputs:
+#         command: test
+#         projects: 'openshiftapplicationtest/openshiftapplicationtest.csproj'
+#         publishTestResults: true
+#         arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'    
+      
+#     - task: PublishCodeCoverageResults@1
+#       displayName: 'Publish code coverage report'
+#       inputs:
+#         codeCoverageTool: 'Cobertura'
+#         summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+
+#     - task: Docker@2
+#       displayName: 'Docker Push Image'
+#       inputs:
+#         containerRegistry: 'docker-arotour'
+#         repository: '$(project-name-dev)/$(image-repository-dev)'
+#         command: 'push'
+#         tags: '$(tag)'
+
+- stage: DEV 
+  displayName: Deploy DEV
+  jobs:
+  - job: Deploy
+    displayName: Deploy-DEV-Job
+    steps:
+    
+    - task: oc-setup@2
+      displayName: Connect With OpenShift
+      inputs:
+        connectionType: 'OpenShift Connection Service'
+        openshiftService: 'openshift-service-connection'
+        
+
+    - task: oc-cmd@2
+      displayName: Select DEV project
+      inputs:
+        connectionType: 'OpenShift Connection Service'
+        openshiftService: 'openshift-service-connection'
+        cmd: 'oc project $(project-name-dev)'
+        uselocalOc: true
+
+    - task: oc-cmd@2
+      displayName: Deploy Web App
+      inputs:
+        connectionType: 'OpenShift Connection Service'
+        openshiftService: 'openshift-service-connection'
+        cmd: 'oc new-app dotnet:6.0-ubi8~https://github.com/tsouzadev/OpticcaDemo --strategy=docker -l name=opticca-demo -e Server=20.118.144.28 -e Port=31433 -e Database=InnovationManagement -e User=sa -e Password=Sql2022Demo'
+        uselocalOc: true
+
+# - stage: UAT 
+#   displayName: Deploy UAT
+#   jobs:
+#   - job: Deploy
+#     displayName: Deploy-UAT-Job
+#     steps:
+    
+#     - task: oc-cmd@2
+#       displayName: Tag Docker Image
+#       inputs:
+#         connectionType: 'OpenShift Connection Service'
+#         openshiftService: 'openshift-service-connection'
+#         cmd: 'oc -n $(project-name-dev)  tag $(project-name-dev)/$(image-repository-dev):$(tag) $(project-name-uat)/$(image-repository-uat):$(tag)'
+#         uselocalOc: true
+
+#     - task: oc-cmd@2
+#       displayName: Select UAT project To UAT
+#       inputs:
+#         connectionType: 'OpenShift Connection Service'
+#         openshiftService: 'openshift-service-connection'
+#         cmd: 'oc project $(project-name-uat)'
+#         uselocalOc: true
+
+#     - task: oc-cmd@2
+#       displayName: 'Deploy To UAT'
+#       inputs:
+#         connectionType: 'OpenShift Connection Service'
+#         openshiftService: 'openshift-service-connection'
+#         cmd: 'oc set triggers dc/$(development-cfg-uat) --from-image=$(project-name-uat)/$(image-repository-uat):$(tag) -c $(container-name-uat)'
+#         uselocalOc: true
