@@ -1,0 +1,36 @@
+﻿.department-ideas {
+    border-collapse: collapse;
+    border: 1px solid gray;
+    border-radius: 8px;
+    width: 100%;
+}
+
+    .department-ideas td, .department-ideas th {
+        border-collapse: collapse;
+        border: 1px solid gray;
+        padding: 10px;
+    }
+
+    .department-ideas .idea-col {
+        text-align: left;
+    }
+
+    .department-ideas a:link {
+        color: black;
+        text-decoration: none;
+    }
+
+    .department-ideas a:visited {
+        color: black;
+        text-decoration: none;
+    }
+
+    .department-ideas a:hover {
+        color: black;
+        text-decoration: none;
+    }
+
+    .department-ideas a:active {
+        color: black;
+        text-decoration: none;
+    }

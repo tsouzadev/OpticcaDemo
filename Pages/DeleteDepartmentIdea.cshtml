@@ -1,0 +1,41 @@
+﻿@page "{id:int}"
+@model DemoAppWeb.Pages.DeleteDepartmentIdeaModel
+@{
+}
+
+<div class="text-center">
+	<table class="department-ideas">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Department</th>
+				<th class="idea-col">Idea</th>
+				<th>Author</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>@Model.DepartmentIdea.Id</td>
+				<td>@Model.DepartmentIdea.DepartmentName</td>
+				<td class="idea-col">@Model.DepartmentIdea.Idea</td>
+				<td>@Model.DepartmentIdea.Author</td>
+				<td><p data-id="@Model.DepartmentIdea.Id" class="delete-btn">Delete</p></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div id="add-idea-form-container" class="add-idea-form-container">
+		<h3>Confirm Deletion</h3>
+		<form method="post">
+			<ul class="add-idea-form">
+				<input type="hidden" asp-for="DepartmentIdea.Id" />
+				<li>
+					<input type="submit" value="Yes"/>
+					<button><a class= asp-page="/Index">No</a></button>
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
+
