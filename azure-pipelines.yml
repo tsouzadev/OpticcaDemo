@@ -75,7 +75,7 @@ stages:
 
     - task: oc-cmd@2
       displayName: Deploy Web App
-      condition: eq(variables['skip-creation'], false))
+      condition: eq'${{skip-creation}}', false))
       inputs:
         connectionType: 'OpenShift Connection Service'
         openshiftService: 'openshift-service-connection'
@@ -84,7 +84,7 @@ stages:
 
     - task: oc-cmd@2
       displayName: Redeploy Web App
-      condition: eq(variables['skip-creation'], true))
+      condition: eq('${{skip-creation}}', true))
       inputs:
         connectionType: 'OpenShift Connection Service'
         openshiftService: 'openshift-service-connection'
