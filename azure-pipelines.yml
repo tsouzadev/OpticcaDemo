@@ -76,7 +76,7 @@ stages:
       inputs:
         connectionType: 'OpenShift Connection Service'
         openshiftService: 'openshift-service-connection'
-        cmd: 'oc new-app dotnet:6.0-ubi8~https://github.com/tsouzadev/OpticcaDemo --strategy=docker -l name=opticca-demo -e Server=20.118.144.28 -e Port=31433 -e Database=InnovationManagement -e User=sa -e Password=Sql2022Demo'
+        cmd: 'oc new-app -f dotnet:6.0-ubi8~https://github.com/tsouzadev/OpticcaDemo --strategy=docker -l name=opticca-demo -e Server=20.118.144.28 -e Port=31433 -e Database=InnovationManagement -e User=sa -e Password=Sql2022Demo'
         uselocalOc: true
 
 # - stage: UAT 
