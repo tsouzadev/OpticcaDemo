@@ -80,6 +80,14 @@ stages:
         uselocalOc: true
 
     - task: oc-cmd@2
+      displayName: Delete Build Config
+      inputs:
+        connectionType: 'OpenShift Connection Service'
+        openshiftService: 'openshift-service-connection'
+        cmd: 'oc delete buildconfig -l name=opticca-demo'
+        uselocalOc: true
+
+    - task: oc-cmd@2
       displayName: Deploy Web App
       inputs:
         connectionType: 'OpenShift Connection Service'
